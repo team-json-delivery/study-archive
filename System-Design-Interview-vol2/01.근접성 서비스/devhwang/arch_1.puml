@@ -1,0 +1,22 @@
+@startuml
+actor User
+component Loadbalancer
+component LBS
+component Businesses
+package Databases{
+database Main
+database ReadReplica1
+database ReadReplica2
+database ReadReplica3
+}
+User -down-> Loadbalancer
+Loadbalancer -down-> Businesses : /businesses/{:id}
+Loadbalancer -down-> LBS : /search/nearby
+LBS -down--> ReadReplica1 : Read
+LBS -down--> ReadReplica2 : Read
+LBS -down--> ReadReplica3 : Read
+Businesses -down-> Main : Write
+Main -down-> ReadReplica1 : Replication
+Main -down-> ReadReplica2 : Replication
+Main -down-> ReadReplica3 : Replication
+@enduml

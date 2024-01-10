@@ -1,0 +1,28 @@
+@startuml
+actor User
+component Loadbalancer
+component LBS
+component Businesses
+package Databases{
+database Main
+database ReadReplica1
+}
+package RedisCluster {
+component GeoHash
+component BusinessCache
+}
+
+User -down-> Loadbalancer
+Loadbalancer -down-> Businesses : /businesses/{:id}
+Loadbalancer -down-> LBS : /search/nearby
+LBS -down-> BusinessCache
+LBS -down-> GeoHash
+Businesses -down-> Main : Write
+
+Main -left-> ReadReplica1 : Replication
+
+ReadReplica1 -up-> GeoHash : write
+Businesses --> GeoHash
+Businesses ---> BusinessCache
+
+@enduml

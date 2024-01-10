@@ -78,7 +78,8 @@ QPS 계산
 | longitude    |    |
 
 **개략적 설계**
-![img.png](img.png)
+
+![archi_1.png](archi_1.png)
 * 시스템은 LBS와 Businesses 두개 컴포넌트로 구분된다
 
 **Loadbalancer**
@@ -113,7 +114,7 @@ QPS 계산
 * database를 full scan해야 하므로 범위가 넓어질수록 기능하지 않는다
 * indexing 을 한다고 하더라도 두개의 column의 교집합을 구해야 함
 * 따라서 흔히 아래와 같은 방법을 사용한다
-  ![img_1.png](img_1.png)
+![geomap.png](geomap.png)
 
 * 근본적으로는 모두 지도를 작은 영역으로 분할하고 고속 검색이 가능한 색인을 만드는 것이다
 
@@ -126,7 +127,7 @@ QPS 계산
 **3. Geohash**
 * 잘 설명된 blog : https://scvgoe.github.io/2018-12-11-Geohash/
 * 2차원의 위도 경도를 1차원의 문자열로 재생성
-  ![img_2.png](img_2.png)
+![img.png](img.png)
 * 12 단계의 정밀도를 갖는데, 일반적으로 4~6 사이를 사용한다
     * 1 : 5,009.4km * 4,992.6km(지구 전체)
     * 4 : 39.1km * 19.5km
@@ -258,7 +259,7 @@ return cache.get(geohash)
         * 일정 범위를 제한으로 두고 도달하면 100개에 도달할 수 없음을 알리고 가지고 있는것만 반환한다와 같은 형식으로 제한이 가능할 것으로 보인다
 
 ### 최종 설계도
-![img_3.png](img_3.png)
+![archi_final.png](archi_final.png)
 
 **주변 사업장 검색**
 1. 500미터 내 주변 사업장을 찾는 경우

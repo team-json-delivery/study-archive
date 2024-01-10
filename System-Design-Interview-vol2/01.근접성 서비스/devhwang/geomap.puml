@@ -1,0 +1,10 @@
+@startuml
+(index) -- (hash)
+index -- (tree)
+hash -- ("even grid")
+hash -- (Geohash)
+hash -- ("Cartesian tiers")
+tree -- (Quadtree)
+tree -- ("GoogleS2")
+tree -- ("R-tree")
+@enduml
