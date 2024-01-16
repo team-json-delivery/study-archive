@@ -1,0 +1,26 @@
+ @startuml
+ component UserA
+
+ package {
+ queue 1q2w3e4r
+ queue 1q2w3e4t
+ queue 1q2w3e4y
+ queue 1q2w3e4u
+ 1q2w3e4r -[hidden]down- 1q2w3e4t
+ 1q2w3e4t -[hidden]down- 1q2w3e4y
+ 1q2w3e4y -[hidden]down- 1q2w3e4u
+ }
+ package {
+ component UserB
+ component UserC
+ component UserD as "UserA"
+
+ UserB -[hidden]down- UserC
+ UserC -[hidden]down- UserD
+ }
+ UserA -right-> 1q2w3e4t : 위치 변경
+ 1q2w3e4t -right-> UserB
+ 1q2w3e4t -right-> UserC
+ 1q2w3e4t -right-> UserD
+
+ @enduml

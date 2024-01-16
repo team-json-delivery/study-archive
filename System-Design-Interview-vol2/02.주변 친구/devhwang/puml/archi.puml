@@ -1,0 +1,35 @@
+ @startuml
+ actor User
+
+ component Loadbalancer
+
+ component API
+ note left of API
+     사용자 관리
+     친구 관리
+     인증 및 기타
+ end note
+ component Websocket
+ note right of Websocket
+     양방향 위치 정보
+ end note
+
+ component Redis
+ component Cache
+ database History
+ database UserInformation
+
+ User -down-> Loadbalancer : http
+ User -down-> Loadbalancer : websocket
+
+ Loadbalancer <-down-> Websocket
+ Loadbalancer -down-> API
+
+ Websocket -down-> Redis
+ Redis -up-> Websocket
+ Websocket -down-> Cache
+ Websocket -down-> History
+ Websocket -down-> UserInformation
+
+ API -down-> UserInformation
+ @enduml

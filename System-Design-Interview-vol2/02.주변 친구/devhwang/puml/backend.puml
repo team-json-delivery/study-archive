@@ -1,0 +1,10 @@
+ @startuml
+ User -> Loadbalancer
+
+ Loadbalancer -> API
+
+
+ API -> UserInformation
+
+
+ @enduml

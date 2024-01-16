@@ -1,0 +1,12 @@
+ @startuml
+ actor user
+ cloud backend
+ actor FriendA
+ actor FriendB
+ actor FriendC
+
+ user -right-> backend
+ backend --> FriendA
+ backend --> FriendB
+ backend --> FriendC
+ @enduml

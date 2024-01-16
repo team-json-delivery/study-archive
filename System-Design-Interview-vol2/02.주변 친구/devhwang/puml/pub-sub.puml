@@ -1,0 +1,28 @@
+ @startuml
+ node Publishers {
+ actor User1
+ actor User2
+ User1 -[hidden]down- User2
+ }
+
+ node "Redis pub/sub"{
+ queue Channel1
+ queue Channel2
+ Channel1 -[hidden]down- Channel2
+ }
+
+ node Subscribers {
+ actor Friend1
+ actor Friend2
+ actor Friend3
+ Friend1 -[hidden]down- Friend2
+ Friend2 -[hidden]down- Friend3
+ }
+
+ User1 -> Channel1
+ User2 -> Channel2
+
+ Channel1 -> Friend1
+ Channel2 -> Friend2
+ Channel2 -> Friend3
+ @enduml
