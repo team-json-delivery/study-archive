@@ -42,6 +42,8 @@
     > 친구가 예전에 여기 있었다. 를 구현하려면? 이 데이터로 활용 가능 하겠네
   - 레디스 펍/섭 서버 : 초경량 메시지 버스. 각 사용자별 채널을 구독하며 나의 정보를 발행하거나 친구의 정보를 수신
     > http://redisgate.kr/redis/command/pubsub_intro.php
+    >
+    > https://inpa.tistory.com/entry/REDIS-%F0%9F%93%9A-PUBSUB-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C-%EC%B1%84%ED%8C%85-%EA%B5%AC%EB%8F%85-%EC%95%8C%EB%A6%BC
 - API 설계
   - WebSoket
     - 주기적 위치정보 갱신
