@@ -61,6 +61,9 @@
       - 미리 만들어 두고 지오 해시 url로 변환
       - POP(Point Of Presence) 활용
       - 캐시 + 응답 속도 감소
+      > 네이버 : https://map.pstatic.net/nrb/styles/basic/1705624166/16/55904/25434.png?mt=bg.ol.ts.lko
+      > 
+      > 카카오 : https://map.daumcdn.net/map_k3f_prod/bakery/image_map_png/PNG01/v24_mq2jf/3/1893/931.png
     - 위/경도 및 확대 수준에 따른 적절한 지오해시 계산 알고리즘
       - 별도의 서비스로 분리
       - 운영 유연성 증가
