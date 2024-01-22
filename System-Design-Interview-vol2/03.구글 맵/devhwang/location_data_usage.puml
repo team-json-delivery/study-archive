@@ -1,0 +1,39 @@
+@startuml
+actor mobile
+component Loadbalanacer
+component LocationService
+database UserLocation
+
+mobile -down-> Loadbalanacer
+Loadbalanacer -down-> LocationService
+LocationService -down-> UserLocation
+
+queue kafka
+
+LocationService -right-> kafka
+
+package {
+    component RealtimeTraffic
+    database Traffic
+    component PersonalizationMachineLearning
+    database Personalization
+    component RoutesTileProcessor
+    database TileStorage
+    component Analyzation
+    database Analyze
+
+    RealtimeTraffic -[hidden]down- PersonalizationMachineLearning
+    PersonalizationMachineLearning -[hidden]down- RoutesTileProcessor
+    RoutesTileProcessor -[hidden]down- Analyzation
+
+    RealtimeTraffic -right-> Traffic
+    PersonalizationMachineLearning -right-> Personalization
+    RoutesTileProcessor -right-> TileStorage
+    Analyzation -right-> Analyze
+}
+
+kafka -right-> RealtimeTraffic
+kafka -right-> PersonalizationMachineLearning
+kafka -right-> RoutesTileProcessor
+kafka -right-> Analyzation
+@enduml

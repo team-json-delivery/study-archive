@@ -1,0 +1,27 @@
+@startuml
+actor mobile
+cloud CDN
+database map_images
+
+mobile -> CDN
+CDN -down-> map_images
+
+component Loadbalancer
+
+mobile -down-> Loadbalancer
+
+component "Navigation Service"
+component "Location Service"
+
+Loadbalancer -down-> "Navigation Service"
+Loadbalancer -down-> "Location Service"
+
+database Geocoding
+database RouteTile
+database UserLocation
+
+"Navigation Service" -down-> Geocoding
+"Navigation Service" -down-> RouteTile
+"Location Service" -down-> UserLocation
+
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+actor mobile
+cloud CDN
+component Loadbalancer
+component "TileURLGenerator"
+
+mobile -right-> CDN : (4) 타일 다운로드
+mobile -down-> Loadbalancer : (1)타일 URL 집합 요청
+Loadbalancer -down-> "TileURLGenerator" : (2) 요청 전달
+"TileURLGenerator" -> "TileURLGenerator" : (3)타일URL생성
+@enduml
