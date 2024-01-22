@@ -1,0 +1,36 @@
+@startuml
+actor mobile
+component RouteService
+component GeocodingService
+database Geocoding
+component RoutePlannerService
+component RankingService
+component FilteringService
+component ShortestPathService
+component ETAService
+database RouteTiles
+database Traffic
+component RealtimeTrafficService
+database Location
+
+mobile -down-> RouteService
+RouteService -left-> GeocodingService
+GeocodingService -left-> Geocoding
+
+RouteService -down-> RoutePlannerService
+RoutePlannerService -down-> RankingService
+RoutePlannerService -down-> ShortestPathService
+RoutePlannerService -down-> ETAService
+RankingService -down-> FilteringService
+ShortestPathService -down-> RouteTiles
+ETAService -down-> Traffic
+Traffic <-down- RealtimeTrafficService
+RealtimeTrafficService -down-> Location
+
+component AdaptiveETA
+database ActiveUser
+AdaptiveETA -down-> ActiveUser
+
+RouteService -right-> AdaptiveETA
+AdaptiveETA --> Traffic
+@enduml
