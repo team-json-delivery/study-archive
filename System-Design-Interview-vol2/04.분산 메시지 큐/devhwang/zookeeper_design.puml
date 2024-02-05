@@ -1,0 +1,22 @@
+ @startuml
+ component Consumer
+ component Producer
+ node Zooekeeper {
+ component Coordinator
+ component "status repo" as status
+ database metadata
+ }
+
+ node Broker {
+ component "data repo" as data
+ }
+ Producer -right-> data
+ data -right-> Consumer
+
+
+ status <-down-> metadata
+ status <-down-> Coordinator
+
+ data -down-> Zooekeeper
+
+ @enduml

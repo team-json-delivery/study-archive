@@ -1,0 +1,17 @@
+ @startuml
+ component Consumer
+ component Producer
+ database metadata
+
+ node Broker {
+ component "data repo" as data
+ component "status repo" as status
+ data -[hidden]down- status
+ }
+ Producer -right-> data
+ data -right-> Consumer
+
+ status <-down-> metadata
+ status <-down-> [Coordinator]
+
+ @enduml

@@ -1,0 +1,14 @@
+ @startuml
+ autonumber
+ "소비자 A" -> 코디네이터 : heartbeat
+ 코디네이터 --> "소비자 A" : heartbeat ack
+ "소비자 B" -> 코디네이터 : heartbeat
+ 코디네이터 --> "소비자 B" : heartbeat ack
+ note right of "소비자 A": 소비자 A로부터 더 이상의 heartbeat 없음, 장애로 보임, 소비자 재조정 필요
+ "소비자 B" -> 코디네이터 : heartbeat
+ 코디네이터 --> "소비자 B" : heartbeat ack(소비자 재조정이 필요하므로 그룹 재합류 요청)
+ "소비자 B" -> 코디네이터 : 그룹 합류 요청
+ 코디네이터 --> "소비자 B" : 응답(리더로 그룹에 합류, 멤버 B)
+ "소비자 B" -> 코디네이터 : 그룹 동기화 요청
+ 코디네이터 --> "소비자 B" : 그룹 동기화(B에 파티션 1,2,3,4 배치)
+ @enduml
