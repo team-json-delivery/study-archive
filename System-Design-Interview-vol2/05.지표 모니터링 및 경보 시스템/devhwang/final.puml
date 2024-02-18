@@ -1,0 +1,29 @@
+@startuml
+component "지표 출처" as source
+component "지표 수집기" as collector
+queue kafka
+component consumer
+database "시계열\n데이터베이스" as db
+component "질의 시스템" as query 
+component "캐시" as cache 
+component "시각화 시스템" as viewer
+component "경보 시스템" as alert
+component "이메일" as email
+component "단문 메시지" as sms
+component "PagerDuty" as pager
+component "HTTPS 서비스\n엔드포인트" as https
+
+source -right-> collector
+collector -right-> kafka
+consumer -left-> kafka
+consumer -right-> db
+query -left-> db
+viewer -left-> query : query
+cache <-up- query
+alert -down-> query
+
+alert -up-> email
+alert -up-> sms
+alert -up-> pager
+alert -up-> https
+@enduml
