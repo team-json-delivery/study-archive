@@ -1,0 +1,21 @@
+@startuml
+skinparam componentStyle rectangle
+component "지면 수요자 측"{
+    component "광고주" as client
+    component DSP
+    client -right-> DSP
+}
+
+component "광고 거래소"
+
+DSP -right-> "광고 거래소"
+
+
+component "지면 공급자 측" {
+    component SSP
+    component "공급자"
+}
+
+"광고 거래소" <-right- SSP
+SSP <-right- "공급자"
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+skinparam componentStyle rectangle
+component "입력"{
+    component "로그 모니터" as monitor
+}
+
+component "프로세스"{
+    component "데이터 집계 서비스" as collector
+    monitor -right-> collector : data push
+}
+
+component "출력"{
+    database "데이터 베이스" as db
+    collector -right-> db : 광고 수
+    db -left-> collector : 가장 많이 클릭된 상위 100개
+}
+
+component "표시"{
+    component "질의 서비스" as query
+    query -left-> db
+}
+@enduml
