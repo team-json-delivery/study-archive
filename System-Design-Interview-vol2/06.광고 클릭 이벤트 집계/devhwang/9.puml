@@ -1,0 +1,19 @@
+@startuml
+skinparam componentStyle rectangle
+component "로그 모니터" as monitor
+queue "메시지 큐" as q
+component "위험성 통제 엔진" as engine
+component hive
+component "click house"
+component "고객 대상 애널리틱스" as analytics
+component "elastic search" as es
+component "데이터 과학자" as scientist
+
+monitor -right-> q
+engine -left-> q
+engine -right-> hive
+engine -up-> "click house"
+analytics -left-> "click house" : 집계 결과 질의
+hive -> es
+scientist -up-> es : 질의
+@enduml

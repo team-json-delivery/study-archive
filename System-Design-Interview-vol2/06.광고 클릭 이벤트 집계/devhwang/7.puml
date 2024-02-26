@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+circle 분배
+circle 집계 as collect1
+circle 집계 as collect2
+분배 --> collect1 : ad1에 300개 이벤트
+분배 --> collect2
+circle 축약
+collect1 --> 축약
+collect2 --> 축약
+
+package "collectors" as a {
+circle 집계 as sub1
+circle 집계 as sub2
+circle 집계 as sub3
+circle 축약 as reduce
+
+sub1 --> reduce : 100개 이벤트
+sub2 --> reduce : 100개 이벤트
+sub3 --> reduce : 100개 이벤트
+}
+
+component "자원 관리자" as manager
+
+collect1 ..> manager : 1. 추가 자원 요청
+manager ..> a : 2. 추가 자원 할당
+
+collect1 ..> a : 3. 이벤트 분할
+a ..> collect1 : 4. 축약 결과
+
+@enduml

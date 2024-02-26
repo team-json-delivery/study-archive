@@ -1,0 +1,33 @@
+@startuml
+skinparam componentStyle rectangle
+component "로그 모니터" as monitor
+queue "메시지 큐" as queue1
+queue "메시지 큐" as queue2
+component "데이터베이스 기록 프로세스" as process1
+database "원시 데이터 베이스"
+component "데이터 집계 서비스"
+component "데이터베이스 기록 프로세스" as process2
+database "집계 데이터 베이스"
+component "질의 서비스"
+
+monitor -right-> queue1
+queue1 -down-> process1
+process1 <-down- "원시 데이터 베이스"
+"데이터 집계 서비스" -left-> queue1
+"데이터 집계 서비스" -right-> queue2 : 광고 수
+"데이터 집계 서비스" -right-> queue2 : 가장 많이 클릭한 상위 100개 광고
+
+process2 -left-> queue2 : 집계 결과 수집
+process2 -down-> "집계 데이터 베이스"
+"질의 서비스" -up-> "집계 데이터 베이스"
+
+component "데이터 집계 서비스\n(재계산 전용)" as collector
+component "재계산 서비스" as replay
+
+collector -up-> queue2
+replay -up-> collector
+replay -left-> "원시 데이터 베이스"
+component 조정 #FFAADD
+조정 -up-> "원시 데이터 베이스"
+조정 -up-> "집계 데이터 베이스"
+@enduml
