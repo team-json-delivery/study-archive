@@ -1,0 +1,35 @@
+@startuml
+actor user
+cloud CDN
+user -left-> CDN
+actor Manager
+component "내부 API"
+component "호텔 관리 서비스"
+Manager -d-> "내부 API"
+"내부 API" -d-> "호텔 관리 서비스"
+
+component "공개 API 게이트웨이"
+user -d-> "공개 API 게이트웨이"
+
+component "호텔 서비스"
+component "요금 서비스"
+component "예약 서비스"
+component "결제 서비스"
+
+"공개 API 게이트웨이" -d-> "호텔 서비스"
+"공개 API 게이트웨이" -d-> "요금 서비스"
+"공개 API 게이트웨이" -d-> "예약 서비스"
+"공개 API 게이트웨이" -d-> "결제 서비스"
+
+component "캐시"
+database "호텔 데이터베이스"
+database "요금 데이터베이스"
+database "예약 데이터베이스"
+database "결제 데이터베이스"
+"호텔 서비스" -d-> "캐시"
+"호텔 서비스" -d-> "호텔 데이터베이스"
+"요금 서비스" -d-> "요금 데이터베이스"
+"예약 서비스" -d-> "예약 데이터베이스"
+"결제 서비스" -d-> "결제 데이터베이스"
+
+@enduml

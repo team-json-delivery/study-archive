@@ -1,0 +1,10 @@
+@startuml
+
+[*] --> pending
+pending -left-> canceled
+pending -right-> rejected
+pending --> paid
+paid --> refunded
+refunded --> [*]
+
+@enduml
