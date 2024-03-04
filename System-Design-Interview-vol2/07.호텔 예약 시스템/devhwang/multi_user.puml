@@ -1,0 +1,11 @@
+@startuml
+autonumber
+actor user
+user -> "예약 서비스" : 예약 주문 생성
+"예약 서비스" --> user : 예약 주문서 표시(reservation_id)
+user -> "예약 서비스" : 예약 제출(reservation_id)
+user -->  "예약 서비스"!!: 예약 제출(reservation_id)
+note right
+유일성 조건 위반
+end note
+@enduml

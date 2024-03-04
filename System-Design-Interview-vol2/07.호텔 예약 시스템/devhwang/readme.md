@@ -109,3 +109,54 @@
 
 ## 3단계: 상세 설계
 ### 개선된 데이터 모델
+* 앞에서 살펴봤듯 특정한 객실을 고르는 것이 아니라 객실 유형을 고르게 된다
+* 따라서 아래와 같이 변경한다
+```json
+{
+  "startDate": "2021-04-28",
+  "endDate":"2021-04-30",
+  "hotelId": "245",
+  "roomType": "U12345",
+  "reservationId": "13422445"
+}
+```
+* 예약 서비스를 확장하여 room_type_inventory를 추가한다
+* hotel_id, room_type_id, date, total_inventory, total_reserved를 가진다
+* 저장 용량은 5000개 호텔 20개의 객실 유형, 2년이면 7300만 row가 필요하다
+* 고가용성을 위해 region별 데이터베이스를 복제해두자
+  * > sync는 어떻게 맞출지?
+* 실제로 쿼리를 해보자
+  * SELECT * FROM room_type_inventory WHERE room_type_id AND hotel_id AND date
+  * total_inventory > total_reserved라면 예약이 가능할 것이다
+* 단일 DB로 대응할 수 없게 호텔이 많아진다면?
+  * 호텔 id를 통한 샤딩도 가능하다
+  * 사용자의 과거 데이터는 아카이빙 또는 cold storage로 보낸다
+
+### 동시성 문제
+* 이중 예약은 어떻게 방지할 것인가?
+1. 같은 사용자가 여러 번 누른 경우
+* 두 가지 접근 방법이 있을 수 있는데
+  * 클라이언트에서 요청을 한번 누르면 그 이후에는 비활성화 하는 것이다
+  * 사용자가 두개의 브라우저를 띄워놨다면 막기 어렵다
+  * javacript를 비활성화...?
+* 멱등 API
+* ![img_2.png](img_2.png)
+2. 하나밖에 없는 객실을 여러 사용자가 동시에 예약하려 할 경우
+* 두 사용자 모두 조회시점에 99개의 방이 예약되어 1개의 방이 남았다
+* 동시에 예약을 누르면 모두 성공하고 101개의 방이 예약된다
+* 이 문제는 락을 잡지 않고 해결할 수 없다. 각각의 락 메커니즘을 살펴보자
+  * Pessimistic lock
+  * Optimistic lock
+  * database constraint
+* Pessimistic lock
+  * Mysql의 경우 SELECT ... FOR UPDATE 문을 사용할 수 있다
+  * SELECT 문의 반환에 락이 걸리기 때문에 트랜잭션 2에서는 기다려야 한다
+  * 장점
+    * 변경 중이거나 변경이 끝난 데이터를 갱신하는 일을 막을 수 있다
+    * 구현이 쉽고 갱신 연산을 직렬화하여 충돌을 막는다, 데이터에 대한 경합이 심할 때 유용하다
+  * 단점
+    * deadlock 발생 가능성이 있다
+      * transactiond에 두개의 리소스가 필요한 경우 각 트랜잭션이 하나씩 선점하는 경우
+    * 확장성이 낮다, 트랜잭션이 오랫동안 락을 해제하지 않으면 성능에 큰 영향을 끼친다
+* Optimistic lock
+  * CAS
