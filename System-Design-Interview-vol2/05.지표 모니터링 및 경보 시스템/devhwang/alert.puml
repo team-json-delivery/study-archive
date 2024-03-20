@@ -10,18 +10,5 @@ component QueryService
 AlertManager -down-> QueryService : 3
 queue Kafka
 AlertManager -right-> Kafka : 5
-component Consumer
-Consumer -left-> Kafka : 6
-component Email
-component SMS
-component PagerDuty
-component Https
-Email -[hidden]down- SMS
-SMS -[hidden]down- PagerDuty
-PagerDuty -[hidden]down- Https
 
-Consumer -right-> Email
-Consumer -right-> SMS
-Consumer -right-> PagerDuty
-Consumer -right-> Https
 @endmul

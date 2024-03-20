@@ -41,22 +41,22 @@
 ## 2단계: 개략적 설계안 제시 및 동의 구하기
 ### API 설계
 * 호텔 API
-* GET /v1/hotels/id : 호텔의 상세정보
-* POST /v1/hotels : 신규 호텔 추가
-* PUT /v1/hotels/id : 호텔 정보 갱신
-* DELETE /v1/hotels/id : 호텔 정보 삭제
+  * GET /v1/hotels/id : 호텔의 상세정보
+  * POST /v1/hotels : 신규 호텔 추가
+  * PUT /v1/hotels/id : 호텔 정보 갱신
+  * DELETE /v1/hotels/id : 호텔 정보 삭제
 
 * 객실 관련 API
-* GET /v1/hotels/:id/rooms/id : 객실의 상세정보
-* POST /v1/hotels/:id/rooms : 객실 추가
-* PUT /v1/hotels/:id/rooms/id : 객실 갱신
-* DELETE /v1/hotels/:id/rooms/id : 객실 삭제
+  * GET /v1/hotels/:id/rooms/id : 객실의 상세정보
+  * POST /v1/hotels/:id/rooms : 객실 추가
+  * PUT /v1/hotels/:id/rooms/id : 객실 갱신
+  * DELETE /v1/hotels/:id/rooms/id : 객실 삭제
 
 * 예약 관련 API
-* GET /v1/reservations : 로그인 사용자의 예약 이력 반환
-* GET /v1/reservations/id : 특정 예약의 상세 정보 반환
-* POST /v1/reservations : 신규 예약
-* DELETE /v1/reservations/id : 예약 취소
+  * GET /v1/reservations : 로그인 사용자의 예약 이력 반환
+  * GET /v1/reservations/id : 특정 예약의 상세 정보 반환
+  * POST /v1/reservations : 신규 예약
+  * DELETE /v1/reservations/id : 예약 취소
 
 * 핵심 API는 신규 예약 접수라고 할 수 있다
 * request body는 아래와 같다. reservationId는 이중 예약을 막고 동일한 예약을 한번만 이루어지도록 보증하는 멱등 키이다. 동시성 절에서 자세히 알아보자
@@ -160,7 +160,7 @@
     * 확장성이 낮다, 트랜잭션이 오랫동안 락을 해제하지 않으면 성능에 큰 영향을 끼친다
 * Optimistic lock
   * client는 자신이 읽었던 version attribute를 들고 write를 시도한다. 내가 읽었던 version과 다르다면 실패한다
-  * Pessimistic lock 보다 빠르지만 100개의 client중 100번쨰 클라이언트는 100번 실패하고 나서야 성공하게 된다
+  * Pessimistic lock 보다 빠르지만 100개의 client중 100번째 클라이언트는 100번 실패하고 나서야 성공하게 된다
   * 장점
     * 데이터베이스에 락을 걸 필요가 없다
     * 경쟁이 치열하지 않은 경우 우수한 성능을 보장한다

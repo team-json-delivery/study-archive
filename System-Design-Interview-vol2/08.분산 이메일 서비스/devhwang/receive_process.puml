@@ -1,0 +1,34 @@
+@startuml
+
+actor email
+email -d-> [load balancer] : (1)
+[load balancer] --> [SMTP Server] : (2)
+[SMTP Server] <--> [Policy]
+
+queue "receive queue"
+[SMTP Server] -> "receive queue" : (4)
+"receive queue" --> [Mail receiver] : (5)
+
+package storage{
+    database metadata
+    database attach
+    database distributed_cache
+    database search
+    portin port
+
+    port --> metadata
+    port --> attach
+    port --> distributed_cache
+    port --> search
+}
+
+[Mail receiver] --> port : (6)
+
+[Mail receiver] --> [RealTime server] : (7)
+actor webmail
+webmail <--> [RealTime server] : (8) websocket
+webmail --> [webserver] : (9) HTTPS
+
+[webserver] --> port : (10)
+[SMTP Server] --> port : (3)
+@enduml

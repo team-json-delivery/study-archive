@@ -1,0 +1,17 @@
+@startuml
+actor US_user
+package US {
+[server] as usserver
+database db as usdb
+usserver -d-> usdb
+}
+
+package EU {
+[server] as euserver
+database db as eudb
+euserver -d-> eudb
+}
+
+US_user .d.> usserver : not available
+US_user -d-> euserver
+@enduml
