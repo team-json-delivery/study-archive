@@ -1,0 +1,42 @@
+@startuml
+
+actor webmail
+webmail -d-> [load balancer] : 1 HTTPS
+[load balancer] -d-> [web server] : 2
+queue error
+queue "external sender"
+[web server] -u-> error : 4.a
+[web server] -r-> "external sender" : 4.b
+package storage{
+    database metadata
+    database attach
+    database distributed_cache
+    database search
+    portin port
+
+    port -u-> metadata
+    port -u-> attach
+    port -u-> distributed_cache
+    port -u-> search
+}
+
+[web server] -d-> port : 3
+
+
+rectangle {
+[EXTERNAL SMTP] -d-> port : 6
+[retry]
+[virus checker]
+[spam checker]
+}
+"external sender" -> [EXTERNAL SMTP] : 5
+[EXTERNAL SMTP] -[hidden]- [retry]
+[retry] -[hidden]- [virus checker]
+[virus checker] -[hidden]- [spam checker]
+[EXTERNAL SMTP] -u-> [retry]
+[EXTERNAL SMTP] -u-> [virus checker]
+[EXTERNAL SMTP] -u-> [spam checker]
+
+cloud internet
+[EXTERNAL SMTP] -r-> internet : 7
+@enduml

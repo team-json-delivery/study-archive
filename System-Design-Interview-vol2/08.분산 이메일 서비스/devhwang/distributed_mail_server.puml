@@ -1,0 +1,17 @@
+@startuml
+actor webmail
+[webserver]
+[realtime server]
+webmail -d-> [webserver]
+webmail -d-> [realtime server]
+package storage{
+    database metadata
+    database attach
+    database distributed_cache
+    database search
+}
+
+[webserver] -d-> storage
+[realtime server] -d--> storage
+
+@enduml

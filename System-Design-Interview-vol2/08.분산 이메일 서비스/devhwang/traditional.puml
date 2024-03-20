@@ -1,0 +1,28 @@
+@startuml
+actor alice
+actor bob
+
+alice --> [outlook] : send
+
+package {
+[SMTP] as smtp1
+[IMAP/POP 서버] as imap1
+database 저장소 as storage1
+smtp1 -d-> storage1
+imap1 -d-> storage1
+[outlook] -d-> smtp1
+}
+
+bob --> [GMAIL] : receive
+
+package {
+[IMAP/POP 서버] as imap2
+[SMTP] as smtp2
+database 저장소 as storage2
+smtp2 -d-> storage2
+imap2 -d-> storage2
+[GMAIL] -d-> smtp2
+}
+
+smtp1 -right-> smtp2 : send
+@enduml
