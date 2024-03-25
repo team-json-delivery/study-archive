@@ -1,0 +1,16 @@
+@startuml
+component "데이터 라우팅 서비스"
+component "배치 서비스"
+database "데이터 노드(주)" as dn0
+database "데이터 노드(부)" as dn1
+database "데이터 노드(부)" as dn2
+"데이터 라우팅 서비스" <-r-> "배치 서비스"
+dn0 <--> "데이터 라우팅 서비스" : 데이터 트래픽
+"배치 서비스" <-d-> dn0 : heartbeat
+"배치 서비스" <-d-> dn1 : heartbeat
+"배치 서비스" <-d-> dn2 : heartbeat
+dn0 -d-> dn1 : replication
+dn0 -d-> dn2  : replication
+
+
+@enduml

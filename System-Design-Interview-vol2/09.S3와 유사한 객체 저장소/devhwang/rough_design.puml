@@ -1,0 +1,33 @@
+@startuml
+actor user
+component loadbalancer
+component IAM
+component API
+component Metadata
+database MetaDB
+package Primary{
+component DataStorage as ds1
+database Storage as s1
+ds1 -r-> s1
+}
+package Secondary1{
+component DataStorage as ds2
+database Storage as s2
+ds2 -r-> s2
+}
+
+package Secondary2{
+component DataStorage as ds3
+database Storage as s3
+ds3 -r-> s3
+}
+
+user -d-> loadbalancer
+loadbalancer -d-> API
+IAM -r-> API
+API -d-> Metadata
+Metadata -d-> MetaDB
+API --> Primary
+Primary --> Secondary1
+Primary --> Secondary2
+@enduml
