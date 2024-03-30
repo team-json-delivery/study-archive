@@ -1,0 +1,11 @@
+@startuml
+component client
+component "Game Service"
+component "Ranking Service"
+database "Ranking storage"
+
+client -down-> "Game Service" : (1) win
+client -down-> "Ranking Service" : (4) \na.get a top ranking\nb. get a player ranking
+"Game Service" -r-> "Ranking Service" : (2) score update
+"Ranking Service" -d-> "Ranking storage" : (3) score update
+@enduml
