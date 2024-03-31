@@ -1,0 +1,11 @@
+@startuml
+actor client
+client -> [AWS API gateway]
+[AWS API gateway] -> [AWS labmda]
+component "Redis" as r1
+component "Redis" as r2
+database "MySql" as d1
+[AWS labmda] --> r1 :  순위표 정렬 집합
+[AWS labmda] --> r2 : 사용자 프로필 캐시(상위10명)
+[AWS labmda] --> d1 : 사용자 프로필 + 사용자 점수
+@enduml
