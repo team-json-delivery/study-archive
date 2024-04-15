@@ -1,0 +1,8 @@
+@startuml
+(*) -down-> NOT_STARTED
+NOT_STARTED -down-> EXECUTING
+EXECUTING -down-> SUCCESS
+EXECUTING -down-> FAIL
+SUCCESS -down-> (*)
+FAIL -down-> (*)
+@enduml
