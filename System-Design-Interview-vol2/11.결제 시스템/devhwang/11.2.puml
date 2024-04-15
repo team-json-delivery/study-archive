@@ -1,0 +1,23 @@
+@startuml
+actor "결제 이벤트"
+component "결제 서비스"
+component "결제 실행자"
+component 원장
+component 지갑
+component PSP
+component "VISA / MASTER"
+database Payment
+database PaymentProcessorDB
+database walletDB
+database 원장DB
+"결제 이벤트" -down-> "결제 서비스" : 1. 결제 이벤트
+"결제 서비스" -left-> Payment : 2. 결제 이벤트 저장
+"결제 서비스" -right-> "결제 실행자" : 3. 결제 주문
+"결제 실행자" <-down-> PaymentProcessorDB : 4. 저장
+"결제 실행자" -right-> PSP : 5. 호출
+PSP -> "VISA / MASTER"
+"결제 서비스" -down-> 지갑 : 6. 지갑 갱신
+지갑 -down-> walletDB : 7. 저장
+"결제 서비스" -down-> 원장 : 8. 원장을 갱신
+원장 -down-> 원장DB : 9. 저장
+@enduml
