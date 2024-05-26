@@ -1,4 +1,5 @@
-# 대칭으로 맞추기
+# Normalize Symmetries
+
 
 * currency가 null이면 exchangeRate을 반환하고 아니면 currency * exchangeRate을 반환하는 함수가 있다고 하자.
 ```java

@@ -1,4 +1,4 @@
-# 보호 구문
+# Guard Clauses
 * 아래와 같은 코드가 있다고 가정하자.
 ```java
 public int boundAdjust(int number) {

@@ -1,4 +1,4 @@
-# 안 쓰는 코드
+# Dead code
 * 안 쓰는 코드는 바로 지우자
 
 ![img.png](img.png)
