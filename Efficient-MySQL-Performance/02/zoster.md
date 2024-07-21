@@ -45,7 +45,9 @@ CREATE TABLE `elem` (
 +----+------+------+------+
 ```
 > elem table
+
 ![img.png](img.png)
+
 > elem 테이블의 InnoDB B-트리 인덱스
 
 * 1,2,3,4 가 primary 키로 값을 달고 있다
@@ -57,7 +59,9 @@ CREATE TABLE `elem` (
 SELECT * FROM elem WHERE a='Au' AND b='Be';
 ```
 * 이 쿼리를 실행한다고 가정해보면
+
 ![img_1.png](img_1.png)
+
 > "Au, Be" 값에 대한 secondary index 조회
 
 1. secondary index의 root에서 부터 B-Tree를 검색하여 primary key 값을 찾는다. O(log n)
