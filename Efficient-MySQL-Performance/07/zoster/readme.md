@@ -58,14 +58,77 @@ COMMIT;
 ## Causes
 * 그럼에도 3가지 주요 원인으로 복제 지연이 발생한다
 ### Transaction Throughput
-* 
+* 트랜잭션 처리량은 원본의 속도가 복제본이 SQL 스레드가 변경사항을 적용할 수 있는 속도보다 빠를 때 지연을 유발한다
+* 그러나 이런 문제가 있다고 원본의 쓰기 속도를 줄일 수는 없다
+* 해결책으론 복제본의 SQL 스레드를 멀티로 실행하여 복제본의 속도를 높일 수 있다
+  * 원본은 일반적으로 병렬로 실행되지만 복제본에서는 단일 스레드가 기본이기 때문이다
+  * 따라서 트랜잭션이 클수록 복제본은 더 느려질 수 있다(단일 스레드가 트랜잭션 처리로 멈추기 때문)
+* 트랜잭션 처리량은 단순히 애플리케이션에 의해서만 결정되진 않는다
+  * backfiling, deleting, archiving은 배치크기를 제어하지 않으면 큰 복제 지연을 유발할 수 있다
 ### Post-Failure Rebuild
+* MySQL 이나 하드웨어 장애시 인스턴스가 수리되어 복제 토폴로지로 돌아간다
+* 또는 새 인스턴스가 기존 인스턴스르 복제하여 대신한다
 ### Network Issues
+* 네트워크 문제로 인해 원본에서 복제본으로 바이너리 로그 이벤트 전송이 지연되면 복제 지연이 발생할 수 있다
 ## Risk: Data Loss
+* 복제 지연은 data loss 이다(문제 발생 시 복구할 수 없음)
+* semisynchronous replication은 커밋된 트랜잭션을 잃지 않을 수 있다
 ### Asynchronous Replication
+* ![img_2.png](img_2.png)
+* Crash의 원인이 MySQL 이라면 자동으로 다시 시작하고 충돌 복구를 수행한 다음 정상 작동을 재개한다
+* Crash의 복구가 잘 이루어진다면 4와 5는 손실되지 않지만, 복구에 몇 분 몇 시간이 걸릴 지 알 수 없다는 문제가 있다
+* 가능하다면 Crash recovery가 가장 이상적이다
+* 그러나 복구 할 수 없다면 DBA가 장애 조치(원본을 복제본으로 대체)하고 트랜잭션 4와 5는 잃어버린다
+* 비동기식 복제를 사용할때 이러한 복구 방법을 사용한다면 데이터의 손실은 불가피하다
+* 그러므로 비동기 복제를 사용할때 복제 지연은 데이터가 손실될 위험을 지연 시간으로 가정하는게 합리적이다
 ### Semisynchronous Replication
+* 반동기식 복제를 사용하면 원본이 복제본의 트랜잭션 승인을 기다린다
+  * ack는 복제본이 바이너리 로그 이벤트를 릴레이 로그에 기록했음을 의미한다
+  * 적용이 아니라 수신 확인 이므로 반동기라고 부른다
+* ![img_3.png](img_3.png)
+* 반동기 복제를 사용하면 커밋된 모든 트랜잭션이 적어도 하나의 복제본에 복제되었음을 보장한다
 ## Reducing Lag: Multithreaded Replication
+* MySQL 복제는 비동기/단일 스레드이다(반동기식 복제도 단일 스레드이다)
+* 단일 SQL 스레드는 복제 지연을 일으키지는 않지만 제한하는 요소이다, 다중 스레드 복제로 해결할 수 있다
+* ![img_4.png](img_4.png)
+* 위 시스템 변수를 이용해 활성화 할 수 있다
+* [replica_parallel_workers](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_replica_parallel_workers) 는 수행할 멀티 스레드의 숫자
+* [replica_parallel_type](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_replica_parallel_type)
+  * 기본값은 DATABASE 이며 데이터 베이스 별로 thread를 분리한다 
+  * LOGICAL_CLOCK을 통해 하나의 database를 multi thread로 처리할 수 있다
+  * replica_preserve_commit_order와 함께 하용할 때 병렬화 기능을 향상시킬 수 있다
+* [replica_preserve_commit_order](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_replica_preserve_commit_order)
+  * 기본값은 비활성화 이지만 활성화 되지 않은 경우 순서에 오류가 발생할 수 있다
+  * 이 값을 활성화 하여 멀티스레드와 트랜잭션의 순서를 동시에 유지할 수 있다
 ## Monitoring
+* 복제 지연을 모니터링하는 가장 좋은 방법은 전용 도구를 사용하는 것이다
+* 기본값으로 제공되는 Second_Behind_Source는 악명이 높다
+  * 바이너리 로그의 이벤트 타임스탬프에만 의존하므로 바이너리 로그 이벤트가 오기 전에 발생한 문제와 분리되어 값이 표현된다
+  * 값이 0과 0이 아닌 값 사이를 반복한다(값이 트랜잭션 별로 별도로 적용된다)
+  * 복제본이 언제 따라 잡을 수 있는가? 를 보여주지 못한다
+  * + 멀티 슬레이브 인 경우 각각의 지연 시간을 정확하게 보여줄 수 없다
 ## Recovery Time
+* 가장 중요한 것은, `그래서 언제 복구 되는가?` 이다
+* ![img_5.png](img_5.png)
+* 복구 시간은 문제가 해결된 변곡점 이후부터 의미가 있다
+  * 필자의 경험 : 복제 지연이 일 단위로 측정되면 문제 해결 후 몇시간 내에 복구된다
 ## Summary
-## Practice: Monitor Subsecond Lag
+* MySQL has three types of replication: asynchronous, semisynchronous, and Group Replication.
+* Asynchronous (async) replication is the default.
+* Asynchronous replication can lose numerous transactions on failure.
+* Semisynchronous (semisync) replication does not lose any committed transactions on failure, only one uncommitted transaction per client connection.
+* Group Replication is the future of MySQL replication and high availability (but not covered in this chapter or book): it turns MySQL instances into a cluster.
+* The foundation of MySQL async and semisync replication is sending transactions, encoded as binary log events, from a source to a replica.
+* Semisync replication makes a transaction commit on the source wait for at least one replica to acknowledge receiving and saving (not applying) the transaction.
+* A replica has an I/O thread that fetches binary log events from the source and stores them in local relay logs.
+* A replica has, by default, one SQL thread that executes binary log events from the local relay logs.
+* Multithreaded replication can be enabled to run multiple SQL threads (applier threads).
+* Replication lag has three main causes: (high) transaction throughput on the source, a MySQL instance catching up after failure and rebuild, or network issues.
+* SQL (applier) threads are the limiting factor in replication lag: more SQL threads reduce lag by applying transaction in parallel.
+* Semisync replication can incur replication lag.
+* Replication lag is data loss, especially with asynchronous replication.
+* Enabling multithreaded replication is the best way to reduce replication lag.
+* The MySQL metric for replication lag, Seconds_Behind_Source, can be misleading; avoid relying on it.
+* Use a purpose-built tool to measure and report MySQL replication lag at subsecond intervals.
+* Recovery time from replication lag is imprecise and difficult to calculate.
+* MySQL will recover, eventually—it always does once the cause is fixed.
