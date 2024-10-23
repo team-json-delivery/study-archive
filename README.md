@@ -2,6 +2,7 @@
 
 | 일정 | 항목 | 
 | --- |--- |
+| 2024. 10. 28 ~        | <a href="https://product.kyobobook.co.kr/detail/S000213057051"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788966264414.jpg" width="200"></a> |
 | 2024. 7. 15 ~ 10. 21 | <a href="https://product.kyobobook.co.kr/detail/S000210684181"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788965403722.jpg" width="200"></a> |
 | 2024. 5. 27 ~ 6. 24 | <a href="https://product.kyobobook.co.kr/detail/S000212999739"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791169212427.jpg" width="200"></a> |
 | 2024. 1. 8 ~ 5. 1 | <a href="https://product.kyobobook.co.kr/detail/S000211656186"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788966264254.jpg" width="200"></a> |
