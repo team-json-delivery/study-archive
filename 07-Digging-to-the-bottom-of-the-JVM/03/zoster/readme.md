@@ -13,19 +13,19 @@
 * 어떤 객체와 GC root 사이를 이어주는 reference chain이 없다면 GC root로 부터 그 객체에 도달할 방법이 없다는게 확실해진다
 * GC root에 사용될 수 있는 객체는
 1. VM stack
-2. Method영역에서 클래스가 static field로 참조하는 객체
-3. method영역에서 constant로 참조되는 객체
-4. JVM 내부에서 쓰이는 참조(NPE, OOM..)
+2. Method영역에서 클래스가 static field로 reference하는 객체
+3. method영역에서 constant로 reference되는 객체
+4. JVM 내부에서 쓰이는 reference(NPE, OOM..)
 5. Synchronized keyword로 잠겨있는 객체
 6. JMXBean
 * 현재 최신 GC 들은 모두 부분 컬렉션을 지원한다. 또한 GC 루트가 너무 많아지지 않도록 최적화를 적용한다
 
-### 3.2.3. 다시 참조 이야기로
+### 3.2.3. 다시 reference 이야기로
 * ```
-  참조 타입 데이터에 저장된 값이 다른 메모리 조각의 시작 주소를 뜻한다면, 이 참조 데이터를 해당 메모리 조각이나 객체를 참조한다고 말한다
+  reference 타입 데이터에 저장된 값이 다른 메모리 조각의 시작 주소를 뜻한다면, 이 reference 데이터를 해당 메모리 조각이나 객체를 reference한다고 말한다
   ```
 * 이 정의는 `버리기는 아까운` 객체를 표현할 방버이 없다
-* JDK 1.2 부터 참조 개념이 확장되어 네 가지로 구분하기 시작했다
+* JDK 1.2 부터 reference 개념이 확장되어 네 가지로 구분하기 시작했다
 1. Strong reference
 2. Soft reference
 3. Weak reference 
@@ -54,8 +54,8 @@
 2. strong generational hypothesis : GC 과정에서 살아남은 횟수가 늘어날 수록 더 오래 살 가능성이 커진다
 * 영역 안의 객체 대부분이 죽는다면, 한데 몰아넣고 살아남은 소수의 객체를 유지하는 것이 하나씩 표기하는 것보다 유리하다
 * 그런데 단순히 세대를 나누기만 하면 문제가 발생한다, 신 세대를 연결한 구세대를 모두 찾아야 하는 문제
-3. intergenerational reference hypothesis : 세대 간 참조의 개수는 같은 세대 안에서의 참조보다 훨씬 적다
-* 이를 해결하기 위해 신세대에 Remembered set이라는 전역 데이터 구조를 하나 두고, 세대 간 참조가 있는지 기록해 관리하는 것이다
+3. intergenerational reference hypothesis : 세대 간 reference의 개수는 같은 세대 안에서의 reference보다 훨씬 적다
+* 이를 해결하기 위해 신세대에 Remembered set이라는 전역 데이터 구조를 하나 두고, 세대 간 reference가 있는지 기록해 관리하는 것이다
 
 ### 3.3.2 Mark-sweep algorithm
 * 존 맥카시가 1960년에 제안한 방법
@@ -101,7 +101,7 @@
 
 ### 3.4.5 Write barrier
 * dirty field를 언제 set 할지는 명확하지만 어떻게 표시를 하느냐의 문제가 남아 있다
-* `참조 타입 필드 대입` 시점에 끼어드는 AOP라고 할 수 있다. 대입되는 순간 around advice가 생성되어 대입 전후 추가 동작을 수행할 수 있게 하는 것이다
+* `reference 타입 필드 대입` 시점에 끼어드는 AOP라고 할 수 있다. 대입되는 순간 around advice가 생성되어 대입 전후 추가 동작을 수행할 수 있게 하는 것이다
 * 이는 오버헤드가 발생하지만 minor GC에서 old gen을 모두 스캔하는 비용보다는 저렴하다
 
 ### 3.4.6 동시 접근 가능성 분석
@@ -142,7 +142,7 @@
 * CMS를 대체했으며 (jdk 9)
 * 이를 위해 heap 전체가 아닌 region별 집합을 만들어 회수 영역을 관리하게 된다
 * G1이 사용화되기 위해 해결해야 했던 주된 문제
-  1. Java heap을 독립된 region으로 나누려면 객체간의 region간 참조 문제를 해결해야 한다
+  1. Java heap을 독립된 region으로 나누려면 객체간의 region간 reference 문제를 해결해야 한다
      2. remembered set을 이용하여 scan하는 방법이 있다, 이 구현을 위해 G1은 heap의 10~20%를 추가로 사용해야 한다
   3. 동시 표시 단계 동안 GC thread와 사용자 thread 간의 간섭 문제
      4. 각 region을 위해 TAMS라는 두 개의 포인터를 설계했다. region의 일부가 회수되는 동안 새로운 객체를 할당하기 위한 공간을 만들고 새로운 객체는 반드시 이 포인터보다 더 높은 주소 영역에 할당 해 mark 됨을 방지한다 
