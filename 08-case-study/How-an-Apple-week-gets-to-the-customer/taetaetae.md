@@ -36,14 +36,14 @@
         Redis-->>Client2: 락 획득 성공
     
         Client2->>DB: 잔액 조회 (SELECT balance FROM account)
-        DB-->>Client2: balance = 3000  (문제 발생!)
+        DB-->>Client2: balance = 3000 (문제 발생!)
     
         Client2->>DB: balance - 1000 적용 (UPDATE account SET balance = 2000)
         DB-->>Client2: 업데이트 성공
     
         Client1->>DB: balance - 3000 적용 (UPDATE account SET balance = 0)
         DB-->>Client1: 업데이트 성공 (갱신 분실!)
-    ️
+        
         Note over DB: 최종 잔액 = 0원 (Client2의 갱신이 사라짐)
     ```
 
