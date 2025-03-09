@@ -52,6 +52,7 @@
   - 원자적 연산 사용 (atomic 하게 연산 처리. mutex, sempahore 등) ⚠️-> DBMS에 의존적, ORM과 좋지 않음
   - 갱신 손실 자동 감지 (낙관적 락 기반 Version 관리와 유사) ⚠️-> DBMS에 의존적, ORM과 좋지 않음
   - CAS(Compare-And-Set) 연산 ✅
+    - CAS ? https://velog.io/@appti/CASCompare-And-Set
     - JPA에서 제공하는 @OptimisticLocking 을 사용(낙관적 락)
     - 분산락으로 동시성 제어(트랜잭션 대기 및 재시도 처리)
     - 낙관적 락으로 갱신 분실 문제 해결 
