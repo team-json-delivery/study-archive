@@ -1,0 +1,37 @@
+@startuml
+package Presentation {
+    class RestfulController
+    class HtmlRenderer
+}
+
+package DomainPackage {
+    class Usecase1
+    class Usecase2
+    class DomainA
+    class DomainB
+    interface DomainRepositoryA
+    interface DomainRepositoryB
+}
+
+package Data{
+    interface OutputPort
+    class MysqlAdapterA
+    class DynamoAdapterA
+    class MysqlAdapterB
+    class DynamoAdapterB
+}
+
+
+RestfulController -down-> Usecase1
+HtmlRenderer -down-> Usecase1
+Usecase1 -> DomainA
+Usecase1 -down-> OutputPort
+Usecase1 -down-> DomainRepositoryA
+Usecase2 -> DomainB
+Usecase2 -down-> OutputPort
+Usecase2 -down-> DomainRepositoryB
+DomainRepositoryA <|-down- MysqlAdapterA
+DomainRepositoryA <|-down- DynamoAdapterA
+DomainRepositoryB <|-down- MysqlAdapterB
+DomainRepositoryB <|-down- DynamoAdapterB
+@enduml

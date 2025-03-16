@@ -1,0 +1,16 @@
+@startuml
+class RestfulController
+class HtmlRenderer
+class Usecase
+class Domain
+interface OutputPort
+interface DomainRepository
+
+RestfulController -down-> Usecase
+HtmlRenderer -down-> Usecase
+Usecase -down-> Domain
+Usecase -down-> OutputPort
+Usecase -down-> DomainRepository
+DomainRepository <|-down- MysqlAdapter
+DomainRepository <|-down- DynamoAdapter
+@enduml
