@@ -1,4 +1,3 @@
-# 
 https://www.borntodare.me/165ad381-9db0-80af-bd9b-e4d184eed3b3
 
 ## 개선배경
