@@ -1,4 +1,6 @@
 - 지혜님이 공유해주신 notebooklm.google.com 으로 요약
+    - https://notebooklm.google.com/notebook/f3e40e7c-cff2-4c5c-8386-e7d3e0d655c2
+    - https://notebooklm.google.com/notebook/f3e40e7c-cff2-4c5c-8386-e7d3e0d655c2/audio
 - 프롬프트
     ```
     해당 영상을 보고 AI시대에 어떤식으로 살아야 하는지에 대한 인사이트를 스터디원들에게 알려주면서 그에 대한 건설적인 토론을 하고 싶어서 영상을 요약해줘
