@@ -2,6 +2,7 @@
 
 | 일정 | 항목 | 
 | --- |--- |
+| 2025. 6. 16 ~  | <a href="https://product.kyobobook.co.kr/detail/S000216400799"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791158395902.jpg" width="200"></a> |
 | 2025. 3. 11 ~ 5. 26 | 사례 스터디 |
 | 2025. 1. 20 ~ 2. 10 | SNS Toy Project |
 | 2024. 10. 28 ~ 2025. 1. 9 | <a href="https://product.kyobobook.co.kr/detail/S000213057051"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788966264414.jpg" width="200"></a> |
