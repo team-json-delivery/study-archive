@@ -1,0 +1,11 @@
+   @startuml MonolithDesign
+   actor 사용자
+   node "Monolith" {
+   component "UI + 백엔드" as UI
+   database "SQL" as SQL
+   folder "Object Store\n(S3 등)" as Store
+   }
+   사용자 --> UI
+   UI --> SQL : 게시물 데이터 저장
+   UI --> Store : 이미지 저장
+   @enduml

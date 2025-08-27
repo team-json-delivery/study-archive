@@ -1,0 +1,16 @@
+@startuml TagSchema
+entity "Post" {
+id
+}
+entity "Tag" {
+id
+name
+}
+entity "Post_Tag" {
+post_id
+tag_id
+}
+
+Post -- Post_Tag
+Tag -- Post_Tag
+@enduml

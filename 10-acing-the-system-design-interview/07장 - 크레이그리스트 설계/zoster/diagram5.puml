@@ -1,0 +1,11 @@
+@startuml PostUploadBackend
+actor 클라이언트
+component "백엔드" as BE
+database "SQL DB" as SQL
+folder "Object Store" as S3
+
+클라이언트 -> BE : 게시물 POST (텍스트 + 이미지)
+BE -> SQL : 게시물 저장
+BE -> S3 : 이미지 업로드
+BE --> 클라이언트 : 성공 응답
+@enduml

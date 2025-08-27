@@ -1,0 +1,13 @@
+@startuml ModularDesign
+actor 사용자
+component "Frontend" as FE
+component "Backend" as BE
+database "SQL DB" as SQL
+folder "Object Store (S3)" as S3
+
+사용자 --> FE
+FE --> BE : 게시물 요청
+BE --> SQL : 텍스트 저장/조회
+BE --> S3 : 이미지 업로드
+FE --> S3 : 이미지 다운로드
+@enduml

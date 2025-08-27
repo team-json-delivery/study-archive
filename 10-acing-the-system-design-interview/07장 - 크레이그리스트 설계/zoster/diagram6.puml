@@ -1,0 +1,10 @@
+@startuml KafkaWriteScale
+actor 게시자
+queue "Kafka: Post Topic" as Kafka
+component "Post Writer" as Writer
+database "SQL DB" as SQL
+
+게시자 -> Kafka : 게시물 생성 요청
+Kafka -> Writer : 메시지 소비
+Writer -> SQL : INSERT
+@enduml

@@ -1,0 +1,10 @@
+   @startuml GeoRouting
+   actor 사용자
+   database "SQL - 서울" as Seoul
+   database "SQL - 부산" as Busan
+   cloud "GeoDNS" as DNS
+
+사용자 --> DNS : craigslist.org 요청
+DNS --> 사용자 : seoul.craigslist.org
+사용자 --> Seoul : 게시물 조회
+@enduml
